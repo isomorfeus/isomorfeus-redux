@@ -17,5 +17,4 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency 'opal', '>= 0.11.0', '< 0.12.0'
-  s.add_dependency 'opal-activesupport', '~> 0.3.1'
 end
