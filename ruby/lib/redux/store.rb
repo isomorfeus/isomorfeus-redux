@@ -1,12 +1,25 @@
 module Redux
   class Store
     include Native::Wrapper
+
+    def self.add_middleware(middleware)
+      if Isomorfeus.store
+        `console.warning("Adding middleware after Store initialization may have side effects! Saving state and initializing new store with restored state!")`
+        middlewares << middleware
+        preloaded_state = Isomorfeus.store.get_state
+        init!
+      else
+        middlewares << middleware
+      end
+    end
+
     def self.add_reducer(reducer)
       if Isomorfeus.store
         # if the store has been initalized already, add the reducer to the instance
         Isomorfeus.store.add_reducer(reducer)
       else
         # otherwise just add it to the reducers, so that they will be used when initializing the store
+        preloaded_state[reducer.keys.first] = {} unless preloaded_state.has_key?(reducer.keys.first)
         reducers.merge!(reducer)
       end
     end
@@ -17,14 +30,25 @@ module Redux
         Isomorfeus.store.add_reducers(new_reducers)
       else
         # otherwise just add it to the reducers, so that they will be used when initializing the store
-        reducers.merge!(new_reducers)
+        new_reducers.each do |key, value|
+          add_reducer(key => value)
+        end
       end
     end
 
     # called from Isomorfeus.init
     def self.init!
       next_reducer = Redux.combine_reducers(@reducers)
-      Redux::Store.new(next_reducer, preloaded_state)
+      if middlewares.any?
+        enhancer = Redux.apply_middleware(middlewares)
+        Redux::Store.new(next_reducer, preloaded_state, enhancer)
+      else
+        Redux::Store.new(next_reducer, preloaded_state)
+      end
+    end
+
+    def self.middlewares
+      @middlewares ||= []
     end
 
     def self.preloaded_state_merge!(ruby_hash)
@@ -62,7 +86,7 @@ module Redux
         } else if (real_preloaded_state) {
           this.native = Redux.createStore(reducer, real_preloaded_state);
         } else if (enhancer) {
-          this.native = Redux.createStore(reducer, null, enhancer);
+          this.native = Redux.createStore(reducer, enhancer);
         } else {
           this.native = Redux.createStore(reducer);
         }

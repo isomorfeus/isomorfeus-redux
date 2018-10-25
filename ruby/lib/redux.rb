@@ -17,7 +17,11 @@ module Redux
   end
 
   def self.apply_middleware(*middlewares)
-    `Redux.applyMiddleware(middlewares)`
+    if middlewares.size == 1
+      `Redux.applyMiddleware.apply(null, middlewares[0])`
+    else
+      `Redux.applyMiddleware.apply(null, middlewares)`
+    end
   end
 
   def self.bind_action_creators(*args)
