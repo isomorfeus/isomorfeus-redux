@@ -1,3 +1,3 @@
 module Redux
-  VERSION = '4.0.0.delta1'
+  VERSION = '4.0.0'
 end
