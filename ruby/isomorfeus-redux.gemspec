@@ -10,10 +10,10 @@ Gem::Specification.new do |s|
   s.homepage      = 'http://isomorfeus.com'
   s.summary       = 'Redux for Opal Ruby.'
   s.license       = 'MIT'
-  s.description   = 'Write redux reducers in Ruby.'
+  s.description   = 'Use a global store and write reducers for it in Opal Ruby.'
 
   s.files         = `git ls-files`.split("\n").reject { |f| f.match(%r{^(gemfiles|s)/}) }
-  s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
+  # s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
   s.add_dependency 'opal', '>= 0.11.0', '< 0.12.0'

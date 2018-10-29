@@ -59,14 +59,35 @@ end
 This helper wraps the ruby code block in a javascript function that takes care of converting Opal Hashes to javascript
 objects and the other way around. The resulting reducer is simply javascript function, suitable for creating a store.
 
+### Adding a reducer to the global store
+The reducer must be a Javascript function and can be created with Redux.create_reducer as above:
+```ruby
+Redux::Store.add_reducer(your_store_key_name: reducer)
+```
+
+### Global Store
+The store is available from anywhere within Opal Ruby context as:
+```ruby
+Isomorfeus.store
+```
+To get the native store from within Javascript context:
+```javascript
+Opal.Isomorfeus.store.native
+```
 ### Other Rubyfications
 - `dispatch` accepts a Ruby Hash
-- `store.get_state` returns a Ruby Hash
+- `get_state` returns a Ruby Hash
 - `subscribe` accepts a ruby block as listener:
 ```ruby
-store.subscribe do
+Isomorfeus.store.subscribe do
   # something useful here
 end
+```
+### Setup
+This is done automatically within Isomorfeus. If isomorfeus-redux is used in isolation, these methods can be used:
+```ruby
+Redux::Store.add_middleware(middleware) # middleware must be Javascript function
+Redux::Store.init! # initializes the global store
 ```
 
 ### Development Tools
