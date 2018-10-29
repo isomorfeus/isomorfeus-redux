@@ -2,6 +2,9 @@
 
 Redux for Opal Ruby.
 
+## Chat
+At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
+
 ## Versioning
 isomorfeus-redux version follows the Redux version which features and API it implements.
 Isomorfeus-redux 4.0.x implements features and the API of Redux 4.0 and should be used with Redux4.0
