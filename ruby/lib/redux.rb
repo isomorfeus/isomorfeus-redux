@@ -1,5 +1,4 @@
 module Redux
-
   def self.create_store(reducer, preloaded_state = nil, enhancer = nil)
     Redux::Store.new(reducer, preloaded_state, enhancer)
   end
@@ -41,5 +40,29 @@ module Redux
         return new_state;
       });
     }
+  end
+
+  def self.get_state_path(state, *path)
+    path.inject(state) do |state_el, path_el|
+      if !state_el.has_key?(path_el)
+        state[path_el]
+      else
+        return nil
+      end
+    end
+  end
+
+  def self.set_state_path(state, *path, value)
+    last_el = path.last
+    path.inject(state) do |state_el, path_el|
+      if path_el == last_el
+        state_el[path_el] = value
+        state_el[path_el]
+      elsif !state_el.has_key?(path_el)
+        state_el[path_el] = {}
+        state_el[path_el]
+      end
+    end
+    nil
   end
 end
