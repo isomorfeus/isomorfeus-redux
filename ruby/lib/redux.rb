@@ -42,6 +42,16 @@ module Redux
     }
   end
 
+  def self.delete_state_path(state, *path)
+    size = path.size - 1
+    set_state_path(state, *path[0..-2], nil)
+    (2...size).each do |i|
+      val = get_state_path(state, *path[0..-i])
+      break if val.keys.size > 1
+      set_state_path(state, *path[0..-i], nil)
+    end
+  end
+
   def self.get_state_path(state, *path)
     path.inject(state) do |state_el, path_el|
       if !state_el.has_key?(path_el)
