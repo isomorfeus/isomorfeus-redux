@@ -52,14 +52,51 @@ module Redux
     end
   end
 
+  def self.fetch_by_path(*path)
+    # get active redux component
+    # (There should be a better way to get the component)
+    %x{
+      var active_component = Opal.React.active_redux_component();
+      var current_state;
+      var final_data;
+      var path_last = path.length - 1;
+      if (path[path_last].constructor === Array) {
+        path[path_last] = JSON.stringify(path[path_last]);
+      }
+      if (active_component) {
+        // try to get data from component state or props or store
+        current_state = active_component.data_access()
+        if (current_state) {
+          final_data = path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
+          // if final data doesn't exist, its set to 'null', so nil or false are ok as final_data
+          if (final_data !== null && typeof final_data !== "undefined") { return final_data; }
+        }
+      } else {
+        // try to get data from store
+        current_state = Isomorfeus.store.native.getState();
+        final_data = path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
+        // if final data doesn't exist, its set to 'null', so nil or false are ok as final_data
+        if (final_data !== null && typeof final_data !== "undefined") { return final_data; }
+      }
+      return null;
+    }
+  end
+
   def self.get_state_path(state, *path)
     path.inject(state) do |state_el, path_el|
-      if !state_el.has_key?(path_el)
-        state[path_el]
+      if state_el.has_key?(path_el)
+        state_el[path_el]
       else
         return nil
       end
     end
+  end
+
+  def self.register_used_store_path(*path)
+    %x{
+      var active_component = Opal.React.active_redux_component();
+      if (active_component) { active_component.register_used_store_path(path); }
+    }
   end
 
   def self.set_state_path(state, *path, value)
@@ -70,6 +107,8 @@ module Redux
         state_el[path_el]
       elsif !state_el.has_key?(path_el)
         state_el[path_el] = {}
+        state_el[path_el]
+      else
         state_el[path_el]
       end
     end
