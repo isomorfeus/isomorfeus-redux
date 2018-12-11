@@ -35,8 +35,10 @@ module Redux
   def self.create_reducer(&block)
     %x{
       return (function(previous_state, action) {
-        var new_state = block.$call(Opal.Hash.$new(previous_state), Opal.Hash.$new(action));
-        if (typeof new_state.$class === "function") { new_state = new_state.$to_n(); }
+        var previous_state_hash = Opal.Hash.$new(previous_state);
+        var new_state_hash = block.$call(previous_state_hash, Opal.Hash.$new(action));
+        if (previous_state_hash === new_state_hash) { return previous_state; }
+        if (typeof new_state.$class === "function") { return new_state.$to_n(); }
         return new_state;
       });
     }
