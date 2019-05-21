@@ -24,7 +24,7 @@ module Redux
   end
 
   def self.bind_action_creators(*args)
-    dispatch = args.pop()
+    dispatch = args.pop
     `Redux.bindActionCreators(args, dispatch)`
   end
 
