@@ -2,8 +2,8 @@
 
 Redux for Opal Ruby.
 
-## Chat
-At our [Gitter Isomorfeus Lobby](http://gitter.im/isomorfeus/Lobby) 
+### Community and Support
+At the [Isomorfeus Framework Project](http://isomorfeus.com) 
 
 ## Versioning
 isomorfeus-redux version follows the Redux version which features and API it implements.
