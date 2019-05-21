@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.license       = 'MIT'
   s.description   = 'Use a global store and write reducers for it in Opal Ruby.'
 
-  s.files         = `git ls-files`.split("\n").reject { |f| f.match(%r{^(gemfiles|s)/}) }
+  s.files         = `git ls-files -- {lib,LICENSE,readme.md}`.split("\n")
   # s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
   s.require_paths = ['lib']
 
