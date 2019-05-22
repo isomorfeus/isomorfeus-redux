@@ -35,6 +35,7 @@ module Redux
   def self.create_reducer(&block)
     %x{
       return (function(previous_state, action) {
+        if (!previous_state) { previous_state = {}; }
         var previous_state_hash = Opal.Hash.$new(previous_state);
         var new_state_hash = block.$call(previous_state_hash, Opal.Hash.$new(action));
         if (previous_state_hash === new_state_hash) { return previous_state; }
