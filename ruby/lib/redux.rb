@@ -39,8 +39,8 @@ module Redux
         var previous_state_hash = Opal.Hash.$new(previous_state);
         var new_state_hash = block.$call(previous_state_hash, Opal.Hash.$new(action));
         if (previous_state_hash === new_state_hash) { return previous_state; }
-        if (typeof new_state.$class === "function") { return new_state.$to_n(); }
-        return new_state;
+        if (typeof new_state_hash.$class === "function") { return new_state_hash.$to_n(); }
+        return previous_state;
       });
     }
   end
