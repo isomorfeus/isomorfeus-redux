@@ -11,25 +11,25 @@ module Redux
       } else {
         real_reducers = reducers;
       }
-      return Redux.combineReducers(real_reducers);
+      return Opal.global.Redux.combineReducers(real_reducers);
     }
   end
 
   def self.apply_middleware(*middlewares)
     if middlewares.size == 1
-      `Redux.applyMiddleware.apply(null, middlewares[0])`
+      `Opal.global.Redux.applyMiddleware.apply(null, middlewares[0])`
     else
-      `Redux.applyMiddleware.apply(null, middlewares)`
+      `Opal.global.Redux.applyMiddleware.apply(null, middlewares)`
     end
   end
 
   def self.bind_action_creators(*args)
     dispatch = args.pop
-    `Redux.bindActionCreators(args, dispatch)`
+    `Opal.global.Redux.bindActionCreators(args, dispatch)`
   end
 
   def self.compose(*functions)
-    `Redux.compose(functions)`
+    `Opal.global.Redux.compose(functions)`
   end
 
   def self.create_reducer(&block)

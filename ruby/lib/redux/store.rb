@@ -82,13 +82,13 @@ module Redux
           real_preloaded_state = preloaded_state;
         }
         if (enhancer && real_preloaded_state) {
-          this.native = Redux.createStore(reducer, real_preloaded_state, enhancer);
+          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state, enhancer);
         } else if (real_preloaded_state) {
-          this.native = Redux.createStore(reducer, real_preloaded_state);
+          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state);
         } else if (enhancer) {
-          this.native = Redux.createStore(reducer, enhancer);
+          this.native = Opal.global.Redux.createStore(reducer, enhancer);
         } else {
-          this.native = Redux.createStore(reducer);
+          this.native = Opal.global.Redux.createStore(reducer);
         }
       }
     end
