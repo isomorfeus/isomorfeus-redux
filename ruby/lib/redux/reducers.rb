@@ -1,5 +1,4 @@
-# TODO move application_state to i-redux
-# TODO implement Isomomorfeus.store.app_store or Isomomorfeus.app_store
+# TODO implement Isomorfeus.store.app_store or Isomorfeus.app_store
 
 module Redux
   module Reducers

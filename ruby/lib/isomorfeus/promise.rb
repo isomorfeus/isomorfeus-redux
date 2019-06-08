@@ -1,5 +1,4 @@
-# taken from https://github.com/ruby-hyperloop/isomorfeus-operation/blob/edge/lib/isomorfeus-operation/promise.rb
-# TODO: This is used only server side and may be used by others too and should be a separate gem maybe
+# taken from https://github.com/ruby-hyperloop/hyper-operation/blob/edge/lib/hyper-operation/promise.rb
 
 class Promise
   def self.value(value)
