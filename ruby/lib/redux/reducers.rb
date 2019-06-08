@@ -1,5 +1,3 @@
-# TODO implement Isomorfeus.store.app_store or Isomorfeus.app_store
-
 module Redux
   module Reducers
     def self.add_application_reducers_to_store
