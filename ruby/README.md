@@ -7,7 +7,7 @@ At the [Isomorfeus Framework Project](http://isomorfeus.com)
 
 ## Versioning
 isomorfeus-redux version follows the Redux version which features and API it implements.
-Isomorfeus-redux 4.0.x implements features and the API of Redux 4.0 and should be used with Redux4.0
+Isomorfeus-redux 4.0.x implements features and the API of Redux 4.0 and should be used with Redux 4.0
 
 ## Installation
 To install redux with the matching version:
@@ -27,14 +27,14 @@ require 'isomorfeus-redux'
 ### Dependencies
 
 For full functionality the following are required:
-- [Opal ES6 import export](https://github.com/opal/opal/pull/1832)
+- [Opal ES6 import export](https://github.com/opal/opal/pull/1976)
 - [Opal Webpack Loader](https://github.com/janbiedermann/opal-webpack-loader)
 - [Opal Autoloader](https://github.com/janbiedermann/opal-autoloader)
 
 For the Gemfile:
 ```ruby
-gem 'opal', github: 'janbiedermann/opal', branch: 'es6_import_export'
-gem 'opal-webpack-loader', '~> 0.3.7'
+gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
+gem 'opal-webpack-loader', '~> 0.9.1'
 gem 'opal-autoloader', '~> 0.0.3'
 ```
 
@@ -92,6 +92,7 @@ To get the native store from within Javascript context:
 ```javascript
 Opal.Isomorfeus.store.native
 ```
+
 ### Other Rubyfications
 - `dispatch` accepts a Ruby Hash
 - `get_state` returns a Ruby Hash
@@ -102,7 +103,7 @@ Isomorfeus.store.subscribe do
 end
 ```
 ### Setup
-This is done automatically within Isomorfeus. If isomorfeus-redux is used in isolation, these methods can be used:
+If isomorfeus-redux is used in isolation, these methods can be used:
 ```ruby
 Redux::Store.add_middleware(middleware) # middleware must be Javascript function
 Redux::Store.init! # initializes the global store
