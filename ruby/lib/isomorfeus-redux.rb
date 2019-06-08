@@ -4,7 +4,11 @@ if RUBY_ENGINE == 'opal'
   require 'redux/version'
   require 'redux'
   require 'redux/store'
-  # store initialization happens in Isomorfeus.init, see isomorfeus-react/lib/isomorfeus/config.rb
+  require 'redux/reducers'
+  require 'isomorfeus/redux_config'
+
+  Redux::Reducers::add_application_reducers_to_store
+  Isomorfeus.init_store
 else
   require 'opal'
   require 'isomorfeus/promise'

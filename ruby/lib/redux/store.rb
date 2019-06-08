@@ -94,15 +94,13 @@ module Redux
     end
 
     def add_reducer(reducer)
-      self.class.reducers << reducer
-      next_reducer = Redux.combine_reducers(*self.class.reducers)
+      self.class.reducers.merge!(reducer)
+      next_reducer = Redux.combine_reducers(self.class.reducers)
       self.replace_reducer = next_reducer
     end
 
     def add_reducers(new_reducers)
-
       self.class.reducers.merge!(new_reducers)
-
       next_reducer = Redux.combine_reducers(self.class.reducers)
       replace_reducer(next_reducer)
     end
