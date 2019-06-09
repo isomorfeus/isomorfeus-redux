@@ -69,6 +69,9 @@ module Redux
 
     def initialize(reducer, preloaded_state = `null`, enhancer = `null`)
       %x{
+        var compose = (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || Opal.global.Redux.compose;
+        var devext_enhance;
+        if (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION__) { devext_enhance = window.__REDUX_DEVTOOLS_EXTENSION__(); }
         var real_preloaded_state;
         if (typeof preloaded_state.$class === "function" && preloaded_state.$class() == "Hash") {
           if (preloaded_state.$size() == 0) {
@@ -82,13 +85,13 @@ module Redux
           real_preloaded_state = preloaded_state;
         }
         if (enhancer && real_preloaded_state) {
-          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state, enhancer);
+          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state, compose(enhancer));
         } else if (real_preloaded_state) {
-          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state);
+          this.native = Opal.global.Redux.createStore(reducer, real_preloaded_state, devext_enhance);
         } else if (enhancer) {
-          this.native = Opal.global.Redux.createStore(reducer, enhancer);
+          this.native = Opal.global.Redux.createStore(reducer, compose(enhancer));
         } else {
-          this.native = Opal.global.Redux.createStore(reducer);
+          this.native = Opal.global.Redux.createStore(reducer, devext_enhance);
         }
       }
     end
