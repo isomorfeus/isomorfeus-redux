@@ -71,14 +71,14 @@ module Redux
         current_state = active_component.data_access()
         if (current_state) {
           final_data = path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
-          // if final data doesn't exist, its set to 'null', so nil or false are ok as final_data
+          // if final data doesn't exist, 'null' is returned, so nil or false are ok as final_data
           if (final_data !== null && typeof final_data !== "undefined") { return final_data; }
         }
       } else {
         // try to get data from store
         current_state = Opal.Isomorfeus.store.native.getState();
         final_data = path.reduce(function(prev, curr) { return prev && prev[curr]; }, current_state);
-        // if final data doesn't exist, its set to 'null', so nil or false are ok as final_data
+        // if final data doesn't exist, 'null' is returned, so nil or false are ok as final_data
         if (final_data !== null && typeof final_data !== "undefined") { return final_data; }
       }
       return null;
