@@ -57,7 +57,6 @@ module Redux
 
   def self.fetch_by_path(*path)
     # get active redux component
-    # (There should be a better way to get the component)
     %x{
       var active_component = Opal.React.active_redux_component();
       var current_state;
@@ -93,6 +92,11 @@ module Redux
         return nil
       end
     end
+  end
+
+  def self.register_and_fetch_by_path(*path)
+    register_used_store_path(*path)
+    fetch_by_path(*path)
   end
 
   def self.register_used_store_path(*path)
