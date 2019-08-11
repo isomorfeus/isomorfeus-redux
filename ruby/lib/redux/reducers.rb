@@ -18,6 +18,7 @@ module Redux
           end
         end
 
+        Redux::Store.preloaded_state_merge!(application_state: {})
         Redux::Store.add_reducers(application_state: app_reducer)
       end
     end
