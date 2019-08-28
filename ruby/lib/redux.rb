@@ -94,18 +94,6 @@ module Redux
     end
   end
 
-  def self.register_and_fetch_by_path(*path)
-    register_used_store_path(*path)
-    fetch_by_path(*path)
-  end
-
-  def self.register_used_store_path(*path)
-    %x{
-      var active_component = Opal.React.active_redux_component();
-      if (active_component) { active_component.register_used_store_path(path); }
-    }
-  end
-
   def self.set_state_path(state, *path, value)
     last_el = path.last
     path.inject(state) do |state_el, path_el|
