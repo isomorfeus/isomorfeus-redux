@@ -1,6 +1,7 @@
 if RUBY_ENGINE == 'opal'
   require 'native'
   require 'promise'
+  require 'isomorfeus/core_ext/hash/deep_merge'
   require 'redux/version'
   require 'redux'
   require 'redux/store'
