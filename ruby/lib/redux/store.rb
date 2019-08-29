@@ -68,6 +68,9 @@ module Redux
     end
 
     def initialize(reducer, preloaded_state = `null`, enhancer = `null`)
+      @deferred_actions = {}
+      @deferred_dispatcher = nil
+      @last_dispatch_time = Time.now
       %x{
         var compose = (typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__) || Opal.global.Redux.compose;
         var devext_enhance;
@@ -122,6 +125,14 @@ module Redux
       Hash.new(`this.native.getState()`)
     end
 
+    def merge_and_defer_dispatch(action)
+      type = action.delete(:type)
+      @deferred_actions[type] = {} unless @deferred_actions.key?(type)
+      @deferred_actions[type].deep_merge!(action)
+      @last_dispatch_time = `new Date()`
+      create_deferred_dispatcher(`new Date()`) unless @deferred_dispatcher
+    end
+
     def replace_reducer(next_reducer)
       `this.native.replaceReducer(next_reducer)`
     end
@@ -129,6 +140,34 @@ module Redux
     # returns function needed to unsubscribe the listener
     def subscribe(&listener)
       `this.native.subscribe(function() { return listener$.call(); })`
+    end
+
+    private
+
+    def create_deferred_dispatcher(first)
+      @deferred_dispatcher = true
+      %x{
+        setTimeout(function() {
+          if (#{wait_longer?(first)}) { #{create_deferred_dispatcher(first)} }
+          else { #{dispatch_deferred_dispatches} }
+        }, 25)
+      }
+    end
+
+    def dispatch_deferred_dispatches
+      @deferred_dispatcher = false
+      actions = @deferred_actions
+      @deferred_actions = {}
+      actions.each do |type, data|
+        dispatch({type: type}.merge(data))
+      end
+    end
+
+    def wait_longer?(first)
+      t = `new Date()`
+      return false if (`t - first`) > 50 # ms
+      return false if (`t - #@last_dispatch_time`) > 10 # ms
+      return true
     end
   end
 end
