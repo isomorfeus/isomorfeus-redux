@@ -126,11 +126,15 @@ module Redux
     end
 
     def merge_and_defer_dispatch(action)
-      type = action.delete(:type)
-      @deferred_actions[type] = {} unless @deferred_actions.key?(type)
-      @deferred_actions[type].deep_merge!(action)
-      @last_dispatch_time = `new Date()`
-      create_deferred_dispatcher(`new Date()`) unless @deferred_dispatcher
+      if Isomorfeus.on_browser?
+        type = action.delete(:type)
+        @deferred_actions[type] = {} unless @deferred_actions.key?(type)
+        @deferred_actions[type].deep_merge!(action)
+        @last_dispatch_time = `new Date()`
+        create_deferred_dispatcher(`new Date()`) unless @deferred_dispatcher
+      else
+        dispatch(action)
+      end
     end
 
     def replace_reducer(next_reducer)
