@@ -14,6 +14,7 @@ if RUBY_ENGINE == 'opal'
 else
   require 'isomorfeus/promise'
   require 'redux/version'
+  require 'isomorfeus/execution_environment'
 
   Opal.append_path(__dir__.untaint)
 
