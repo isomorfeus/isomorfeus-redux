@@ -1,3 +1,4 @@
+require 'opal'
 if RUBY_ENGINE == 'opal'
   require 'native'
   require 'promise'
@@ -11,7 +12,6 @@ if RUBY_ENGINE == 'opal'
   Redux::Reducers::add_application_reducers_to_store
   Isomorfeus.init_store
 else
-  require 'opal'
   require 'isomorfeus/promise'
   require 'redux/version'
 
