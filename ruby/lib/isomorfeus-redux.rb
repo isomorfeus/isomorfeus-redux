@@ -18,6 +18,6 @@ else
 
   Opal.append_path(__dir__.untaint)
 
-  path = File.expand_path('isomorfeus')
+  path = File.expand_path('app')
   Opal.append_path(path) unless Opal.paths.include?(path)
 end
