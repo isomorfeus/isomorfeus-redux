@@ -20,6 +20,7 @@ end
 
 task :push_ruby_packages_to_isomorfeus do
   Bundler.with_original_env do
-    system("gem inabox isomorfeus-redux-#{Redux::VERSION}.gem --host http://localhost:5555/")
+    system("scp isomorfeus-redux-#{Redux::VERSION}.gem iso:~/gems/")
+    system("ssh iso \"bash -l -c 'gem inabox gems/isomorfeus-redux-#{Redux::VERSION}.gem --host http://localhost:5555/'\"")
   end
 end

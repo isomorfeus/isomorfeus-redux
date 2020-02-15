@@ -12,7 +12,9 @@ if RUBY_ENGINE == 'opal'
   Redux::Reducers::add_application_reducers_to_store
   Isomorfeus.init_store
 else
-  require 'isomorfeus/promise'
+  opal_path = Gem::Specification.find_by_name('opal').full_gem_path
+  promise_path = File.join(opal_path, 'stdlib', 'promise.rb')
+  require promise_path
   require 'redux/version'
   require 'isomorfeus/execution_environment'
 
