@@ -12,7 +12,7 @@ Isomorfeus-redux 4.0.x implements features and the API of Redux 4.0 and should b
 ## Installation
 To install redux with the matching version:
 ```
-yarn add redux@4.0.0
+yarn add redux@4.0.5
 ```
 then add to the Gemfile:
 ```ruby
