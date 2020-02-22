@@ -1,5 +1,4 @@
-# frozen_string_literal: true
-# taken from: https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/hash/deep_merge.rb
+# originally taken from: https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/hash/deep_merge.rb
 
 class Hash
   # Returns a new hash with +self+ and +other_hash+ merged recursively.
