@@ -53,8 +53,8 @@ module Isomorfeus
 
     self.on_ssr      = `(typeof process   === 'object' && typeof process.release === 'object' && typeof process.release.name === 'string' && process.release.name === 'node') ? true : false`
     self.on_desktop  = `(typeof navigator === 'object' && typeof navigator.userAgent === 'string' && navigator.userAgent.toLowerCase().indexOf(' electron/') > -1) ? true : false`
-    self.on_ios      = `(typeof Platform  === 'object' && typeof Platform.OS === 'string' && Platform.OS.toLowerCase().includes?('ios')) ? true : false`
-    self.on_android  = `(typeof Platform  === 'object' && typeof Platform.OS === 'string' && Platform.OS.toLowerCase().includes?('android')) ? true : false`
+    self.on_ios      = `(typeof Platform  === 'object' && typeof Platform.OS === 'string' && Platform.OS.toLowerCase().includes('ios')) ? true : false`
+    self.on_android  = `(typeof Platform  === 'object' && typeof Platform.OS === 'string' && Platform.OS.toLowerCase().includes('android')) ? true : false`
     self.on_mobile   = self.on_ios? || self.on_android?
     self.on_database = false
     self.on_browser  = !self.on_ssr? && !self.on_desktop? && !self.on_mobile? && !self.on_database?
