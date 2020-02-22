@@ -4,6 +4,7 @@ if RUBY_ENGINE == 'opal'
   require 'promise'
   require 'isomorfeus/core_ext/hash/deep_merge'
   require 'isomorfeus/execution_environment'
+  require 'isomorfeus/execution_environment_helpers'
   require 'redux'
   require 'redux/store'
   require 'redux/reducers'
@@ -17,6 +18,7 @@ else
   require promise_path
   require 'redux/version'
   require 'isomorfeus/execution_environment'
+  require 'isomorfeus/execution_environment_helpers'
 
   Opal.append_path(__dir__.untaint)
 
