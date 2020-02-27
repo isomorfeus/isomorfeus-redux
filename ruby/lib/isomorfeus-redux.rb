@@ -1,14 +1,20 @@
 require 'opal'
+require 'isomorfeus/execution_environment'
+require 'isomorfeus/core_ext/kernel'
+
 if RUBY_ENGINE == 'opal'
   require 'native'
   require 'promise'
+  require 'securerandom'
   require 'isomorfeus/core_ext/hash/deep_merge'
-  require 'isomorfeus/execution_environment'
-  require 'isomorfeus/execution_environment_helpers'
   require 'redux'
   require 'redux/store'
   require 'redux/reducers'
   require 'isomorfeus/redux_config'
+  require 'isomorfeus/browser_store_api'
+  require 'local_store'
+  require 'session_store'
+  require 'app_store'
 
   Redux::Reducers::add_application_reducers_to_store
   Isomorfeus.init_store
@@ -17,8 +23,6 @@ else
   promise_path = File.join(opal_path, 'stdlib', 'promise.rb')
   require promise_path
   require 'redux/version'
-  require 'isomorfeus/execution_environment'
-  require 'isomorfeus/execution_environment_helpers'
 
   Opal.append_path(__dir__.untaint)
 
