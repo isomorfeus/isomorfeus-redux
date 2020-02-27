@@ -34,11 +34,117 @@ For full functionality the following are required:
 For the Gemfile:
 ```ruby
 gem 'opal', github: 'janbiedermann/opal', branch: 'es6_modules_1_1'
-gem 'opal-webpack-loader', '~> 0.9.1'
-gem 'opal-autoloader', '~> 0.0.3'
+gem 'opal-webpack-loader', '~> 0.9.10'
 ```
 
-## Usage
+## Usage within Isomorfeus
+
+Lucid Components have store access integrated, see the isomorfeus-react documentation.
+
+The following stores are available:
+- AppStore - reactive store managed by redux
+- LocalStore - convenient access to the Browsers localStorage, changes from within ruby can be subscribed to
+- SessionStore - convenient access to the Browsers sessionStorage, changes from within ruby can be subscribed to
+
+### AppStore
+All keys must be Strings or Symbols! All values must be serializable, simple types preferred!
+
+Example Usage:
+```ruby
+# setting a value:
+AppStore.some_key = 10
+AppStore[:some_key] = 10
+AppStore.set(:some_key, 10) 
+AppStore.promise_set(:some_key, 10)
+
+# getting a value:
+val = AppStore.some_key
+val = AppStore[:some_key]
+val = AppStore.get(:some_key) 
+AppStore.promise_get(:some_key).then do |val|
+  # do something
+end
+
+# subscribing to changes
+unsub = AppStore.subscribe do
+  @val = AppStore.some_key
+end
+
+# MUST be unsibscribed if changes are no longer wanted
+AppStore.unsubscribe(unsub) 
+```
+
+### LocalStore
+All keys and values must be Strings or Symbols!
+
+```ruby
+# setting a value:
+LocalStore.some_key = 10
+LocalStore[:some_key] = 10
+LocalStore.set(:some_key, 10) 
+LocalStore.promise_set(:some_key, 10)
+
+# getting a value:
+val = LocalStore.some_key
+val = LocalStore[:some_key]
+val = LocalStore.get(:some_key) 
+LocalStore.promise_get(:some_key).then do |val|
+  # do something
+end
+
+# deleting a value
+LocalStore.delete(:some_key)
+LocalStore.promise_delete(:some_key)
+
+# clearing the store
+LocalStore.clear 
+LocalStore.promise_clear
+
+# subscribing to changes
+unsub = LocalStore.subscribe do
+  @val = LocalStore.some_key
+end
+
+# MUST be unsibscribed if changes are no longer wanted
+LocalStore.unsubscribe(unsub) 
+```
+
+### SessionStore
+All keys and values must be Strings or Symbols!
+
+```ruby
+# setting a value:
+SessionStore.some_key = 10
+SessionStore[:some_key] = 10
+SessionStore.set(:some_key, 10) 
+SessionStore.promise_set(:some_key, 10)
+
+# getting a value:
+val = SessionStore.some_key
+val = SessionStore[:some_key]
+val = SessionStore.get(:some_key) 
+SessionStore.promise_get(:some_key).then do |val|
+  # do something
+end
+
+# deleting a value
+SessionStore.delete(:some_key)
+SessionStore.promise_delete(:some_key)
+
+# clearing the store
+SessionStore.clear 
+SessionStore.promise_clear
+
+# subscribing to changes
+unsub = SessionStore.subscribe do
+  @val = SessionStore.some_key
+end
+
+# MUST be unsibscribed if changes are no longer wanted
+LocalStore.unsubscribe(unsub) 
+```
+
+## Advanced Usage
 Because isomorfeus-redux follows closely the Redux principles/implementation/API and Documentation, most things of the official Redux documentation
 apply, but in the Ruby way, see:
 - https://redux.js.org
@@ -102,6 +208,7 @@ Isomorfeus.store.subscribe do
   # something useful here
 end
 ```
+
 ### Setup
 If isomorfeus-redux is used in isolation, these methods can be used:
 ```ruby
@@ -111,3 +218,6 @@ Redux::Store.init! # initializes the global store
 
 ### Development Tools
 The Redux Development Tools allow for detailed debugging of store/state changes: https://github.com/zalmoxisus/redux-devtools-extension
+
+### Specs
+Specs for the stores are in isomorfeus-react.
