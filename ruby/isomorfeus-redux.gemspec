@@ -8,9 +8,9 @@ Gem::Specification.new do |s|
   s.authors       = ['Jan Biedermann']
   s.email         = ['jan@kursator.com']
   s.homepage      = 'http://isomorfeus.com'
-  s.summary       = 'Redux for Opal Ruby.'
+  s.summary       = 'Redux and Stores for Isomorfeus.'
   s.license       = 'MIT'
-  s.description   = 'Use a global store and write reducers for it in Opal Ruby.'
+  s.description   = 'Use different stores within Isomorfeus and write reducers for redux.'
   s.metadata      = { "github_repo" => "ssh://github.com/isomorfeus/gems" }
   s.files         = `git ls-files -- {lib,LICENSE,README.md}`.split("\n")
   # s.test_files    = `git ls-files -- {test,s,features}/*`.split("\n")
