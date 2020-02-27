@@ -125,16 +125,18 @@ module Redux
       Hash.new(`this.native.getState()`)
     end
 
-    def merge_and_defer_dispatch(action)
-      if Isomorfeus.on_browser?
+    def collect_and_defer_dispatch(action)
+      if !Isomorfeus.on_ssr?
         type = action.delete(:type)
-        @deferred_actions[type] = {} unless @deferred_actions.key?(type)
-        @deferred_actions[type].deep_merge!(action)
-        @last_dispatch_time = `new Date()`
-        create_deferred_dispatcher(`new Date()`) unless @deferred_dispatcher
+        @deferred_actions[type] = [] unless @deferred_actions.key?(type)
+        @deferred_actions[type].push(action)
+        @last_dispatch_time = `Date.now()`
+        `console.log(#@last_dispatch_time)`
+        deferred_dispatcher(`Date.now()`) unless @deferred_dispatcher
       else
         dispatch(action)
       end
+      nil
     end
 
     def replace_reducer(next_reducer)
@@ -143,34 +145,38 @@ module Redux
 
     # returns function needed to unsubscribe the listener
     def subscribe(&listener)
-      `this.native.subscribe(function() { return listener$.call(); })`
+      `this.native.subscribe(function() { return listener.$call(); })`
     end
 
     private
 
-    def create_deferred_dispatcher(first)
+    def deferred_dispatcher(first)
       @deferred_dispatcher = true
       %x{
         setTimeout(function() {
-          if (#{wait_longer?(first)}) { #{create_deferred_dispatcher(first)} }
+          if (#{wait_longer?(first)}) { #{deferred_dispatcher(first)} }
           else { #{dispatch_deferred_dispatches} }
-        }, 25)
+        }, 10)
       }
     end
 
     def dispatch_deferred_dispatches
+      `console.log(Date.now())`
       @deferred_dispatcher = false
       actions = @deferred_actions
       @deferred_actions = {}
       actions.each do |type, data|
-        dispatch({type: type}.merge(data))
+        dispatch(type: type, collected: data)
       end
     end
 
     def wait_longer?(first)
-      t = `new Date()`
-      return false if (`t - first`) > 50 # ms
-      return false if (`t - #@last_dispatch_time`) > 10 # ms
+      t = `Date.now()`
+      time_since_first = `t - first`
+      `console.log('delta', time_since_first)`
+      return true if `typeof Opal.React !== 'undefined' && typeof Opal.React.render_buffer !== 'undefined' && Opal.React.render_buffer.length > 0 && time_since_first < 1000`
+      return false if time_since_first > 100 # ms
+      return false if (`t - #@last_dispatch_time`) > 9 # ms
       return true
     end
   end
