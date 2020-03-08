@@ -131,7 +131,7 @@ module Redux
         @deferred_actions[type] = [] unless @deferred_actions.key?(type)
         @deferred_actions[type].push(action)
         @last_dispatch_time = `Date.now()`
-        `console.log(#@last_dispatch_time)`
+        # `console.log(#@last_dispatch_time)`
         deferred_dispatcher(`Date.now()`) unless @deferred_dispatcher
       else
         dispatch(action)
@@ -161,7 +161,7 @@ module Redux
     end
 
     def dispatch_deferred_dispatches
-      `console.log(Date.now())`
+      # `console.log(Date.now())`
       @deferred_dispatcher = false
       actions = @deferred_actions
       @deferred_actions = {}
@@ -173,7 +173,7 @@ module Redux
     def wait_longer?(first)
       t = `Date.now()`
       time_since_first = `t - first`
-      `console.log('delta', time_since_first)`
+      # `console.log('delta', time_since_first)`
       return true if `typeof Opal.React !== 'undefined' && typeof Opal.React.render_buffer !== 'undefined' && Opal.React.render_buffer.length > 0 && time_since_first < 1000`
       return false if time_since_first > 100 # ms
       return false if (`t - #@last_dispatch_time`) > 9 # ms
